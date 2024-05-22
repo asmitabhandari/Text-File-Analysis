@@ -1,0 +1,78 @@
+﻿import string
+
+
+def read_file_contents(file_name):
+    """Reads the contents of a file, removes punctuation, and returns a list of words."""
+    file_data = []
+    with open(file_name, 'r') as file:
+        for line in file:
+            line_data = line.replace(",", " ").split()
+            for word in line_data:
+                word = word.strip(string.punctuation)
+                file_data.append(word)
+    return file_data
+
+
+def write_to_file(file_name, text):
+    """Writes the given text to a file."""
+    with open(file_name, "w") as file:
+        file.write(text)
+
+
+def get_unique_words(file_data):
+    """Returns a set of unique words from the given file data."""
+    return set(file_data)
+
+
+def get_union_words(file_data1, file_data2):
+    """Returns the union of unique words from the two given file data sets."""
+    return get_unique_words(file_data1).union(get_unique_words(file_data2))
+
+
+def get_intersection_words(file_data1, file_data2):
+    """Returns the intersection of unique words from the two given file data sets."""
+    return get_unique_words(file_data1).intersection(get_unique_words(file_data2))
+
+
+def get_words_not_in_file(file_data1, file_data2):
+    """Returns the words that are present in one file data set but not in the other."""
+    return get_words_in_file1_not_in_file2(file_data1, file_data2) + get_words_in_file2_not_in_file1(file_data1, file_data2)
+
+
+def get_words_in_file1_not_in_file2(file_data1, file_data2):
+    """Returns the words that are present in file data set 1 but not in file data set 2."""
+    return [word for word in file_data1 if word not in file_data2]
+
+
+def get_words_in_file2_not_in_file1(file_data1, file_data2):
+    """Returns the words that are present in file data set 2 but not in file data set 1."""
+    return [word for word in file_data2 if word not in file_data1]
+
+
+def get_words_freq_table(file_data):
+    """Returns a formatted string that displays the words and their corresponding counts in the file."""
+    word_counts = {}
+    for word in file_data:
+        if word in word_counts:
+            word_counts[word] += 1
+        else:
+            word_counts[word] = 1
+    freq_table = "Word Count Table:\n"
+    for word, count in word_counts.items():
+        freq_table += f"{word:<20}{count:<5}\n"
+    return freq_table
+
+
+def analyze_files():
+    """Prompts the user to input the names of two text files, analyzes and compares their contents, and writes the results to a file."""
+    file_name1 = input("Enter the name of the first text file: ")
+    file_name2 = input("Enter the name of the second text file: ")
+    file_data1 = read_file_contents(file_name1)
+    file_data2 = read_file_contents(file_name2)
+    unique_words_in_file1 = get_unique_words(file_data1)
+    unique_words_in_file2 = get_unique_words(file_data2)
+    union_words = get_union_words(file_data1, file_data2)
+    intersection_words = get_intersection_words(file_data1, file_data2)
+    words_not_in_both_files = get_words_not_in_file(file_data1, file_data2)
+    words_freq_table_file1 = get_words_freq_table(file_data1)
+    words_freq_table_file2 = get_words_freq_table
